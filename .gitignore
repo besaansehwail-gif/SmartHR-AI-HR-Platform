@@ -1,0 +1,87 @@
+# Secrets and local environment files. Keep only placeholder templates.
+.env
+.env.*
+!.env.example
+!**/.env.example
+
+# Python environments and generated files.
+.venv/
+venv/
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.cache/
+**/.cache/
+.coverage
+htmlcov/
+
+# Node dependencies and generated frontend output.
+node_modules/
+**/node_modules/
+dist/
+frontend_temp/
+
+# Local user data, uploads, and generated indexes.
+uploads/
+rag_index/
+debug_captures/
+runtime/
+**/runtime/
+tmp/
+**/tmp/
+backup/
+**/backup/
+backups/
+**/backups/
+
+# Logs and runtime diagnostics.
+logs/
+**/logs/
+*.log
+
+# Local database files, dumps, and backups. Keep schema migrations tracked.
+*.db
+*.sqlite
+*.sqlite3
+*.dump
+*.bak
+*.backup
+/*.sql
+*backup*.sql
+*dump*.sql
+*backup*.json
+*dump*.json
+*backup*.jsonl
+*dump*.jsonl
+*backup*.csv
+*dump*.csv
+
+# Archives and generated API descriptions.
+*.zip
+/openapi*.json
+**/openapi*.json
+
+# Generated test/browser artifacts and recordings.
+test_artifacts/
+**/test_artifacts/
+test-artifacts/
+**/test-artifacts/
+test-results/
+**/test-results/
+playwright-report/
+screenshots/
+recordings/
+audio_artifacts/
+video_artifacts/
+artifacts/
+*.test.wav
+*.test.webm
+*.test.mp4
+*.test.png
+
+# Third-party binary kept for local testing only.
+tools/livekit/livekit-server.exe

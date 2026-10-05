@@ -1,0 +1,55 @@
+# SmartHR backend dependencies.
+#
+# The project previously had no requirements file - the checked-in venv was the
+# only record of what it needs. These are pinned to what is installed.
+
+fastapi==0.141.1
+uvicorn==0.52.4
+SQLAlchemy==2.0.52
+psycopg==3.3.5
+psycopg-binary==3.3.5
+pydantic==2.13.5
+PyJWT==2.13.0
+pwdlib==0.3.1
+argon2-cffi==25.1.0
+python-multipart==0.0.32
+python-dotenv==1.2.3
+
+# LiveKit transport and the explicitly-dispatched Cloud media worker.  The
+# worker only bridges audio/data; SmartHR's existing interview service remains
+# the state and persistence authority.
+livekit==1.1.18
+livekit-api==1.2.1
+livekit-agents==1.8.2
+
+# AI CV analysis - text extraction only. Neither library executes document
+# content: pypdf reads a PDF's text layer, python-docx reads the DOCX zip.
+pypdf==6.18.1
+python-docx==1.2.0
+
+# Model Context Protocol - the SmartHR MCP server and the in-process client the
+# AI endpoint uses. NOTE: this is mcp 2.x, where v1's FastMCP is MCPServer.
+mcp==2.2.0
+
+# RAG over HR policy documents (app/rag/). No new dependency: chunking,
+# embeddings, the vector store and similarity search are plain Python. PDF and
+# DOCX documents reuse pypdf / python-docx above. There is deliberately no
+# vector-database server and no embedding library - see the "RAG" section of
+# CLAUDE.md for why a JSON index was chosen over pgvector. LangChain is not
+# used here either; `langchain-core` arrives only as langgraph's dependency,
+# below, and nothing in app/rag/ or app/ai/ imports it.
+
+# AI Employee Celebration (app/ai/celebration/) - the multi-agent workflow's
+# graph: nodes, edges, the conditional edge and the shared state. It pulls
+# langchain-core, langgraph-checkpoint, langgraph-sdk and langsmith.
+#
+# websockets is required by langgraph-sdk (>=14,<17 via langgraph 1.2.12)
+# and langsmith (>=15.0). LiveKit does not use it (WebRTC, not the
+# `websockets` package); the only in-repo import is the dev-only Chrome
+# DevTools driver in scripts/verify_ai_interview_browser.py, whose
+# connect(max_size=...) call is stable across 15.x-17.x.
+# 15.0.1 is the newest version satisfying every langgraph-sdk in
+# langgraph's allowed range (>=0.4.2,<0.5.0). Do NOT bump to >=17:
+# uv (strict resolver) fails where pip only warns.
+langgraph==1.2.12
+websockets==15.0.1

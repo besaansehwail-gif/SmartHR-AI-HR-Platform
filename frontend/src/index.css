@@ -1,0 +1,290 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   SmartHR — Amber Sand design tokens
+   --------------------------------------------------------------------------
+   The brand palette given for SmartHR is six fixed values:
+
+     Background     #FFFAF5     Light Orange   #FEE1C7
+     Primary Orange #F7A96B     Dark Orange    #C45A2A
+     Main Text      #2D2D2D     White          #FFFFFF
+
+   Those six are the anchors of the `brand` scale below; the remaining steps
+   are interpolated so ordinary Tailwind utilities (bg-brand-600,
+   text-brand-700, border-brand-200 ...) work everywhere and stay on-brand.
+
+   Contrast: brand-600 is the CTA colour and clears 4.5:1 on white, brand-700
+   clears 6:1, so both are safe for body-sized text. brand-400 and lighter are
+   surface/decoration colours only.
+   ========================================================================== */
+
+@theme {
+  --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace;
+
+  /* Brand — Amber Sand */
+  --color-brand-50: #FFF6EE;
+  --color-brand-100: #FEE1C7;
+  --color-brand-200: #FBCFA6;
+  --color-brand-300: #F9BB85;
+  --color-brand-400: #F7A96B;
+  --color-brand-500: #E4813C;
+  --color-brand-600: #C45A2A;
+  --color-brand-700: #A44820;
+  --color-brand-800: #82381A;
+  --color-brand-900: #632A14;
+  --color-brand-950: #3B1A0D;
+
+  /* Surfaces — warm sand canvas, white cards */
+  --color-sand-50: #FFFAF5;
+  --color-sand-100: #FDF3EA;
+  --color-sand-200: #F6E9DC;
+  --color-sand-300: #EADCCB;
+
+  /* Ink — the specified main text colour plus softer steps */
+  --color-ink: #2D2D2D;
+
+  /* Two font sizes the app uses heavily for dense table / meta text.
+     They were referenced across ~450 call sites but never defined, so they
+     silently did nothing until now. */
+  --text-3xs: 0.625rem;
+  --text-3xs--line-height: 0.9rem;
+  --text-2xs: 0.6875rem;
+  --text-2xs--line-height: 1rem;
+
+  /* Elevation — deliberately shallow. Cards lift, they do not float. */
+  --shadow-card: 0 1px 2px 0 rgb(45 34 24 / 0.04), 0 1px 3px 0 rgb(45 34 24 / 0.05);
+  --shadow-card-hover: 0 2px 4px -1px rgb(45 34 24 / 0.06), 0 6px 16px -4px rgb(45 34 24 / 0.10);
+  --shadow-pop: 0 8px 28px -6px rgb(45 34 24 / 0.16), 0 2px 6px -2px rgb(45 34 24 / 0.08);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-sand-50);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Accessibility: a visible, on-brand focus ring for keyboard users on every
+     interactive element, including ones that carry no focus:ring classes. */
+  :focus-visible {
+    outline: 2px solid var(--color-brand-600);
+    outline-offset: 2px;
+    border-radius: 0.375rem;
+  }
+
+  ::selection {
+    background-color: var(--color-brand-100);
+    color: var(--color-brand-900);
+  }
+
+  /* Slim, warm scrollbars so long tables and side panels stay quiet. */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-sand-300) transparent;
+  }
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  *::-webkit-scrollbar-thumb {
+    background-color: var(--color-sand-300);
+    border: 3px solid transparent;
+    background-clip: padding-box;
+    border-radius: 9999px;
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-brand-200);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Entrance animations for dropdowns, popovers and toasts.
+   These class names mirror tailwindcss-animate, which the project references
+   but does not install, so the markup already using them now actually moves.
+   Kept to a single short fade/lift - no decorative motion.
+   -------------------------------------------------------------------------- */
+@utility animate-in {
+  animation: smarthr-enter 160ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@utility fade-in {
+  --enter-opacity: 0;
+}
+@utility zoom-in-95 {
+  --enter-scale: 0.96;
+}
+@utility slide-in-from-bottom-3 {
+  --enter-translate-y: 0.5rem;
+}
+@utility slide-in-from-top-2 {
+  --enter-translate-y: -0.35rem;
+}
+
+@keyframes smarthr-enter {
+  from {
+    opacity: var(--enter-opacity, 1);
+    transform: translate3d(0, var(--enter-translate-y, 0), 0) scale(var(--enter-scale, 1));
+  }
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Horizontal scroll affordance for data tables on narrow screens. */
+@utility table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Skeleton shimmer used by the shared loading states. */
+@utility skeleton {
+  background-image: linear-gradient(
+    90deg,
+    var(--color-sand-100) 25%,
+    var(--color-sand-200) 37%,
+    var(--color-sand-100) 63%
+  );
+  background-size: 400% 100%;
+  animation: smarthr-shimmer 1.4s ease infinite;
+}
+
+@keyframes smarthr-shimmer {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}
+
+/* ==========================================================================
+   Bilingual support — Arabic (RTL) and English (LTR)
+   --------------------------------------------------------------------------
+   The application flips direction by setting `dir` and `lang` on <html> (see
+   src/i18n/LocaleProvider.tsx). Almost nothing else is needed, because the
+   components use **logical** Tailwind utilities — `ms-*`, `me-*`, `ps-*`,
+   `pe-*`, `text-start`, `text-end`, `start-*`, `end-*`, `border-s`,
+   `border-e` — which resolve against the document direction on their own.
+
+   What is left here is the handful of things logical properties cannot
+   express: the typeface, and a few transforms that have to be mirrored by
+   hand.
+   ========================================================================== */
+
+@theme {
+  /* Applied only under :lang(ar) below, so an English session never pays for
+     the Arabic face. */
+  --font-arabic: 'IBM Plex Sans Arabic', 'Noto Sans Arabic', 'Segoe UI',
+    Tahoma, sans-serif;
+}
+
+@layer base {
+  /*
+     Arabic typography. The stack keeps the Latin face first so Latin runs
+     inside Arabic text — an email address, a job title from the database, a
+     model name — stay in Plus Jakarta Sans rather than being redrawn by the
+     Arabic face. Mixed-script lines are the norm in this app, not the
+     exception.
+  */
+  :lang(ar),
+  [dir='rtl'] {
+    font-family: 'Plus Jakarta Sans', var(--font-arabic);
+  }
+
+  /*
+     Arabic glyphs sit lower and denser than Latin at the same size, so line
+     height is opened slightly. This is the whole typographic adjustment:
+     font sizes, weights and the Amber Sand palette are untouched.
+  */
+  [dir='rtl'] body {
+    line-height: 1.7;
+  }
+
+  /*
+     Arabic has no capital letters, so `uppercase` does nothing to the glyphs
+     while `tracking-wider` pulls the cursive joins apart and makes section
+     labels harder to read, not easier. Both are neutralised for Arabic only;
+     the English UI keeps its small-caps section headings exactly as designed.
+  */
+  [dir='rtl'] .uppercase {
+    text-transform: none;
+  }
+  [dir='rtl'] .tracking-wider,
+  [dir='rtl'] .tracking-widest {
+    letter-spacing: 0;
+  }
+
+  /*
+     Numbers, dates, emails, file names and code stay left-to-right inside an
+     Arabic sentence. The browser's bidi algorithm mostly handles this, but an
+     isolated run is what keeps a figure like "50%" or an id like "#164" from
+     being reordered by the punctuation around it.
+  */
+  [dir='rtl'] .font-mono,
+  [dir='rtl'] code,
+  [dir='rtl'] [data-ltr] {
+    direction: ltr;
+    unicode-bidi: isolate;
+    text-align: start;
+  }
+}
+
+/*
+   Mirrored transforms.
+
+   `translate-x` is a geometric transform, not a logical one: it does not know
+   about direction, so the off-canvas mobile sidebar would slide in from the
+   left in Arabic while sitting on the right. These two rules flip it. They
+   are the only place in the app where a direction is hard-coded, and they are
+   here rather than in the component because it is a layout mechanic, not a
+   decision any component should be making.
+
+   It is confined to below the `lg` breakpoint (Tailwind's own `max-lg`
+   query) because that is the only width at which the sidebar is off-canvas.
+   This rule is unlayered, so it beats every layered utility - including the
+   `lg:translate-x-0` that pins the sidebar open on desktop. Unconfined, it
+   pushed the desktop sidebar off the right edge of every Arabic page.
+*/
+@media (width < 64rem) {
+  [dir='rtl'] .-translate-x-full {
+    --tw-translate-x: 100%;
+    translate: var(--tw-translate-x) var(--tw-translate-y);
+  }
+}
+
+/*
+   Directional icons — a chevron or arrow that means "forward", "back", "next"
+   or "previous" — are mirrored by marking them, never by flipping every icon
+   in the app. A clock, a user, a warning triangle or the SmartHR logo must
+   NOT be mirrored: reversing them is the classic RTL mistake and makes an
+   interface look broken rather than translated.
+
+       <ChevronRight className="w-4 h-4" data-flip-rtl />
+*/
+[dir='rtl'] [data-flip-rtl] {
+  scale: -1 1;
+}

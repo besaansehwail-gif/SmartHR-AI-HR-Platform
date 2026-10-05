@@ -1,0 +1,6 @@
+{
+  "name": "SmartHR",
+  "description": "Enterprise HR SaaS platform featuring Admin, HR, Manager, and Employee Workspaces (Employee Dashboard, Profile, Attendance, Leave, Training, Performance OKRs, Career Growth & Skills Matrix, and Notifications).",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

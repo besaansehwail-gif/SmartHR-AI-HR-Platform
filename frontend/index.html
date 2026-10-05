@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SmartHR — People • Intelligence • Growth</title>
+    <meta name="description" content="Enterprise HR SaaS platform featuring Admin, HR, Manager, and Employee Workspaces (Employee Dashboard, Profile, Attendance, Leave, Training, Performance OKRs, Career Growth & Skills Matrix, and Notifications)." />
+    <meta property="og:title" content="SmartHR — People • Intelligence • Growth" />
+    <meta property="og:description" content="Enterprise HR SaaS platform featuring Admin, HR, Manager, and Employee Workspaces (Employee Dashboard, Profile, Attendance, Leave, Training, Performance OKRs, Career Growth & Skills Matrix, and Notifications)." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!--
+      Plus Jakarta Sans carries no Arabic glyphs, so an Arabic UI would fall
+      back to whatever the OS supplies (Tahoma on Windows) - legible, but not
+      a typeface anyone chose. IBM Plex Sans Arabic is added for that: one
+      extra family, four weights, matched in tone and x-height to the Latin
+      face so the two do not read as two different products. It is applied by
+      `[dir="rtl"]` / `:lang(ar)` in index.css, so an English session never
+      downloads a glyph it will not draw.
+    -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  </head>
+  <body class="bg-[#FAF8F5] text-stone-900 antialiased font-['Plus_Jakarta_Sans',sans-serif]">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
